@@ -1,16 +1,21 @@
 'use server';
 
 import { analyzeAccountData } from '@/ai/flows/analyze-account-data';
-import type { AnalysisReport } from '@/types';
+import { analyzeTransactions } from '@/ai/flows/analyze-transactions';
+import type { AnalysisReport, TransactionAnalysis } from '@/types';
 
-export async function getAnalysis(accountText: string): Promise<{ data: AnalysisReport | null; error: string | null }> {
+export async function getAnalysis(accountText: string): Promise<{ data: AnalysisReport | null; error: string | null; transactionAnalyses?: TransactionAnalysis[] }> {
   if (!accountText.trim()) {
     return { data: null, error: 'Account text cannot be empty.' };
   }
 
   try {
-    const result = await analyzeAccountData({ accountText });
-    return { data: result, error: null };
+    const [reportResult, transactionAnalysesResult] = await Promise.all([
+      analyzeAccountData({ accountText }),
+      analyzeTransactions({ transactionsCsv: accountText }),
+    ]);
+    
+    return { data: reportResult, error: null, transactionAnalyses: transactionAnalysesResult.analyses };
   } catch (e) {
     console.error('Error in getAnalysis action:', e);
     // Check for a more specific error message if available
