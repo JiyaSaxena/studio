@@ -5,6 +5,13 @@ import { analyzeTransactions } from '@/ai/flows/analyze-transactions';
 import type { AnalysisReport, TransactionAnalysis } from '@/types';
 
 export async function getAnalysis(accountText: string): Promise<{ data: AnalysisReport | null; error: string | null; transactionAnalyses?: TransactionAnalysis[] }> {
+  if (!process.env.GEMINI_API_KEY) {
+    return { 
+      data: null, 
+      error: 'The GEMINI_API_KEY environment variable is not set. Please add it to the .env file in your project and restart the server.' 
+    };
+  }
+  
   if (!accountText.trim()) {
     return { data: null, error: 'Account text cannot be empty.' };
   }
