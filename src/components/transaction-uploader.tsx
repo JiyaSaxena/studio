@@ -1,48 +1,25 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Upload } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
-import Papa from "papaparse";
-import type { Transaction } from "@/types";
+import { Loader2, Upload, Search, FileCode } from "lucide-react";
+import { Input } from "./ui/input";
 
 interface TransactionUploaderProps {
-  onTransactionsParsed: (transactions: Transaction[]) => void;
+  onFileChange: (file: File) => void;
   isLoading: boolean;
 }
 
-export function TransactionUploader({ onTransactionsParsed, isLoading }: TransactionUploaderProps) {
+export function TransactionUploader({ onFileChange, isLoading }: TransactionUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const { toast } = useToast();
+  const [fileName, setFileName] = useState<string | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      if (file.type !== "text/csv") {
-        toast({
-          variant: "destructive",
-          title: "Invalid File Type",
-          description: "Please upload a valid .csv file.",
-        });
-        return;
-      }
-      
-      Papa.parse<Transaction>(file, {
-        header: true,
-        skipEmptyLines: true,
-        complete: (results) => {
-          onTransactionsParsed(results.data);
-        },
-        error: (error) => {
-          toast({
-            variant: "destructive",
-            title: "CSV Parse Error",
-            description: error.message,
-          });
-        }
-      });
+      setFileName(file.name);
+      onFileChange(file);
     }
   };
 
@@ -51,35 +28,50 @@ export function TransactionUploader({ onTransactionsParsed, isLoading }: Transac
   };
 
   return (
-    <Card>
+    <Card className="bg-secondary/50 border border-border">
       <CardHeader>
-        <CardTitle>Upload Transaction Data</CardTitle>
+        <CardTitle>Account Data Input</CardTitle>
         <CardDescription>
-          Upload a CSV file with transaction data to analyze for mule account patterns.
+          Upload a CSV file with transaction data to analyze for suspicious patterns.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Button className="w-full" onClick={handleUploadClick} disabled={isLoading}>
-          {isLoading ? (
-            <>
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Analyzing...
-            </>
-          ) : (
-            <>
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-2">
+            <Button variant="outline" onClick={handleUploadClick} disabled={isLoading}>
               <Upload className="mr-2 h-4 w-4" />
-              Upload CSV
-            </>
-          )}
-        </Button>
-        <input
-          type="file"
-          ref={fileInputRef}
-          onChange={handleFileChange}
-          className="hidden"
-          accept=".csv"
-          disabled={isLoading}
-        />
+              Upload CSV File
+            </Button>
+            {fileName && (
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <FileCode className="h-4 w-4" />
+                <span>{fileName}</span>
+              </div>
+            )}
+          </div>
+
+          <Button className="w-full" onClick={() => fileInputRef.current?.files?.[0] && onFileChange(fileInputRef.current.files[0])} disabled={isLoading || !fileName}>
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Analyzing...
+              </>
+            ) : (
+              <>
+                <Search className="mr-2 h-4 w-4" />
+                Analyze Account
+              </>
+            )}
+          </Button>
+
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            className="hidden"
+            accept=".csv"
+          />
+        </div>
       </CardContent>
     </Card>
   );

@@ -31,12 +31,11 @@ export default function DashboardPage() {
       reader.onload = async (e) => {
         const csvContent = e.target?.result as string;
         
-        Papa.parse(csvContent, {
+        Papa.parse<Transaction>(csvContent, {
           header: true,
           skipEmptyLines: true,
-          dynamicTyping: true,
           complete: async (results) => {
-            const parsedTransactions = results.data.map((t, index) => ({ ...(t as Omit<Transaction, 'id'>), id: index + 1 }));
+            const parsedTransactions = results.data.map((t, index) => ({ ...t, id: index + 1 }));
             setTransactions(parsedTransactions);
             setAnalysis([]);
             setIsLoading(true);
@@ -77,13 +76,9 @@ export default function DashboardPage() {
   });
 
   return (
-    <div className="flex flex-col min-h-screen bg-background text-foreground">
+    <div className="flex flex-col min-h-screen">
       <AppHeader />
       <main className="flex-1 container mx-auto p-4 md:p-8 space-y-8">
-        <div className="text-center">
-            <h1 className="text-3xl font-bold">Mule Account Scanner</h1>
-            <p className="text-muted-foreground">Paste account data below to analyze for suspicious patterns and generate a risk score.</p>
-        </div>
         <TransactionUploader onFileChange={handleFileChange} isLoading={isLoading} />
         
         {isLoading && (

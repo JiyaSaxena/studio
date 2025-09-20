@@ -1,10 +1,9 @@
 'use server';
 
-import { analyzeAccountData } from '@/ai/flows/analyze-account-data';
 import { analyzeTransactions } from '@/ai/flows/analyze-transactions';
-import type { AnalysisReport, TransactionAnalysis } from '@/types';
+import type { AnalyzeTransactionsOutput } from '@/ai/flows/analyze-transactions';
 
-export async function getAnalysis(accountText: string): Promise<{ data: AnalysisReport | null; error: string | null; transactionAnalyses?: TransactionAnalysis[] }> {
+export async function getAnalysis(transactionsCsv: string): Promise<{ data: AnalyzeTransactionsOutput | null; error: string | null; }> {
   if (!process.env.GEMINI_API_KEY) {
     return { 
       data: null, 
@@ -12,20 +11,15 @@ export async function getAnalysis(accountText: string): Promise<{ data: Analysis
     };
   }
   
-  if (!accountText.trim()) {
-    return { data: null, error: 'Account text cannot be empty.' };
+  if (!transactionsCsv.trim()) {
+    return { data: null, error: 'CSV data cannot be empty.' };
   }
 
   try {
-    const [reportResult, transactionAnalysesResult] = await Promise.all([
-      analyzeAccountData({ accountText }),
-      analyzeTransactions({ transactionsCsv: accountText }),
-    ]);
-    
-    return { data: reportResult, error: null, transactionAnalyses: transactionAnalysesResult.analyses };
+    const result = await analyzeTransactions({ transactionsCsv });
+    return { data: result, error: null };
   } catch (e) {
     console.error('Error in getAnalysis action:', e);
-    // Check for a more specific error message if available
     const errorMessage = e instanceof Error ? e.message : 'An unknown error occurred.';
     return { data: null, error: `An error occurred during analysis: ${errorMessage}. Please try again.` };
   }
