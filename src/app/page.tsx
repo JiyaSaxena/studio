@@ -40,7 +40,14 @@ export default function DashboardPage() {
         Papa.parse(csvContent, {
           header: true,
           skipEmptyLines: true,
-          dynamicTyping: true,
+          dynamicTyping: false,
+          transform: (value, header) => {
+            if (header === 'Amount' || header === 'id' || header === 'Is_laundering') {
+              const num = parseFloat(value);
+              return isNaN(num) ? value : num;
+            }
+            return value;
+          },
           complete: async (results) => {
             const parsedTransactions = results.data.map((t, index) => ({ ...(t as Omit<Transaction, 'id'>), id: index + 1 }));
             setTransactions(parsedTransactions);
