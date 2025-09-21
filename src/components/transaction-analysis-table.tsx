@@ -12,6 +12,7 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { ScrollArea } from "./ui/scroll-area";
+import { getCurrencyCode } from "@/lib/utils";
 
 interface TransactionAnalysisTableProps {
   transactions: Transaction[];
@@ -58,7 +59,7 @@ export function TransactionAnalysisTable({ transactions }: TransactionAnalysisTa
                         {transaction.riskScore ?? 'N/A'}
                       </Badge>
                     </TableCell>
-                    <TableCell className="font-medium">{new Intl.NumberFormat('en-US', { style: 'currency', currency: transaction.Payment_currency || 'USD' }).format(transaction.Amount)}</TableCell>
+                    <TableCell className="font-medium">{new Intl.NumberFormat('en-US', { style: 'currency', currency: getCurrencyCode(transaction.Payment_currency) }).format(transaction.Amount)}</TableCell>
                     <TableCell>{transaction.Payment_type}</TableCell>
                     <TableCell>{transaction.Sender_bank_location}</TableCell>
                     <TableCell>{transaction.Receiver_bank_location}</TableCell>
