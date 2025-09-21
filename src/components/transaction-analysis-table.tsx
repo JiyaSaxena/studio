@@ -9,11 +9,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "./ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
-import { FileDown } from "lucide-react";
-import Papa from "papaparse";
 
 interface TransactionAnalysisTableProps {
   transactions: Transaction[];
@@ -30,33 +27,6 @@ export function TransactionAnalysisTable({ transactions }: TransactionAnalysisTa
     if (score > 40) return "secondary";
     return "default";
   }
-
-  const handleExport = (format: 'json' | 'csv') => {
-    let data;
-    let fileName;
-    let mimeType;
-
-    if (format === 'csv') {
-      data = Papa.unparse(transactions);
-      fileName = 'transaction_analysis.csv';
-      mimeType = 'text/csv';
-    } else {
-      data = JSON.stringify(transactions, null, 2);
-      fileName = 'transaction_analysis.json';
-      mimeType = 'application/json';
-    }
-
-    const blob = new Blob([data], { type: mimeType });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = fileName;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
 
   return (
     <Card>
@@ -98,16 +68,6 @@ export function TransactionAnalysisTable({ transactions }: TransactionAnalysisTa
             </Table>
         </div>
       </CardContent>
-      <CardFooter className="flex justify-end gap-2">
-        <Button variant="outline" onClick={() => handleExport('csv')}>
-          <FileDown className="mr-2 h-4 w-4" />
-          Export as CSV
-        </Button>
-        <Button onClick={() => handleExport('json')}>
-          <FileDown className="mr-2 h-4 w-4" />
-          Export as JSON
-        </Button>
-      </CardFooter>
     </Card>
   );
 }
