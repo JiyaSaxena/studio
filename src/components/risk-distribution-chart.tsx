@@ -13,10 +13,10 @@ export function RiskDistributionChart({ analysis }: RiskDistributionChartProps) 
   
   const riskDistribution = useMemo(() => {
     const distribution = [
-      { name: "Low", count: 0, fill: "hsl(var(--chart-3))" },
-      { name: "Medium", count: 0, fill: "hsl(var(--chart-5))" },
-      { name: "High", count: 0, fill: "hsl(var(--chart-4))" },
-      { name: "Critical", count: 0, fill: "hsl(var(--destructive))" },
+      { name: "Low", count: 0, fill: "hsl(var(--chart-1))" }, // Green
+      { name: "Medium", count: 0, fill: "hsl(var(--chart-2))" }, // Yellow
+      { name: "High", count: 0, fill: "hsl(var(--chart-3))" }, // Orange
+      { name: "Critical", count: 0, fill: "hsl(var(--chart-4))" }, // Red
     ];
 
     analysis.forEach(item => {

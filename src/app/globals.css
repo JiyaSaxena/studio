@@ -27,23 +27,23 @@
     --ring: 262 80% 58%;
     --radius: 0.5rem;
 
-    --chart-1: 262 80% 58%; /* Primary Purple */
-    --chart-2: 300 80% 60%; /* Accent Pink/Magenta */
-    --chart-3: 270 55% 65%; /* Muted Purple */
-    --chart-4: 340 82% 60%; /* Red/Pink for high risk */
-    --chart-5: 280 90% 70%; /* Lighter Purple for medium risk */
+    --chart-1: 120 60% 45%; /* Green for Low Risk */
+    --chart-2: 45 100% 50%; /* Yellow for Medium Risk */
+    --chart-3: 30 100% 50%; /* Orange for High Risk */
+    --chart-4: 0 84% 60%; /* Red for Critical Risk */
+    --chart-5: 280 90% 70%;
   }
  
   .dark {
-    --background-start: 274 56% 15%; /* Dark Purple */
-    --background-end: 262 80% 25%; /* Slightly Lighter Dark Purple */
-    --background: 274 56% 15%; /* Fallback for components */
-    --foreground: 270 50% 96%; /* Light Lilac Text */
-    --card: 274 56% 15%;
+    --background-start: 265 40% 8%;
+    --background-end: 275 50% 12%;
+    --background: 270 45% 10%;
+    --foreground: 270 50% 96%;
+    --card: 270 40% 14%;
     --card-foreground: 270 50% 96%;
-    --popover: 274 56% 15%;
+    --popover: 270 40% 14%;
     --popover-foreground: 270 50% 96%;
-    --primary: 262 80% 68%; /* Brighter Purple for Dark Mode */
+    --primary: 262 80% 68%;
     --primary-foreground: 274 56% 10%;
     --secondary: 274 40% 25%;
     --secondary-foreground: 270 50% 96%;
@@ -51,16 +51,16 @@
     --muted-foreground: 270 30% 70%;
     --accent: 300 80% 70%;
     --accent-foreground: 274 56% 10%;
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
     --border: 274 40% 25%;
     --input: 274 40% 25%;
     --ring: 262 80% 68%;
 
-    --chart-1: 262 80% 68%;
-    --chart-2: 300 80% 70%;
-    --chart-3: 270 55% 75%;
-    --chart-4: 340 82% 70%;
+    --chart-1: 120 60% 45%; /* Green */
+    --chart-2: 45 100% 50%; /* Yellow */
+    --chart-3: 30 100% 50%; /* Orange */
+    --chart-4: 0 84% 60%; /* Red */
     --chart-5: 280 90% 80%;
   }
 }
