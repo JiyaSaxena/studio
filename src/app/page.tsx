@@ -42,7 +42,8 @@ export default function DashboardPage() {
           skipEmptyLines: true,
           dynamicTyping: false,
           transform: (value, header) => {
-            if (header === 'Amount' || header === 'id' || header === 'Is_laundering') {
+            const headerStr = header as string;
+            if (headerStr === 'Amount' || headerStr === 'id' || headerStr === 'Is_laundering') {
               const num = parseFloat(value);
               return isNaN(num) ? value : num;
             }
