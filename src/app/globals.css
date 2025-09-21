@@ -4,7 +4,9 @@
 
 @layer base {
   :root {
-    --background: 270 60% 94%; /* Saturated Light Lilac */
+    --background-start: 270 60% 94%; /* Lighter Purple */
+    --background-end: 262 80% 88%; /* Darker Purple */
+    --background: 270 60% 94%; /* Fallback for components */
     --foreground: 274 56% 20%; /* Darker Purple for text */
     --card: 270 50% 98%; /* Lighter card background */
     --card-foreground: 274 56% 20%;
@@ -33,7 +35,9 @@
   }
  
   .dark {
-    --background: 274 56% 15%; /* Dark Purple */
+    --background-start: 274 56% 15%; /* Dark Purple */
+    --background-end: 262 80% 25%; /* Slightly Lighter Dark Purple */
+    --background: 274 56% 15%; /* Fallback for components */
     --foreground: 270 50% 96%; /* Light Lilac Text */
     --card: 274 56% 15%;
     --card-foreground: 270 50% 96%;
@@ -67,6 +71,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-image: linear-gradient(to bottom, hsl(var(--background-start)), hsl(var(--background-end)));
     font-family: var(--font-inter), sans-serif;
   }
 }
