@@ -4,15 +4,15 @@
 
 @layer base {
   :root {
-    --background: 270 50% 98%; /* Light Lilac */
-    --foreground: 274 56% 25%; /* Deep Purple for text */
-    --card: 270 30% 100%;
-    --card-foreground: 274 56% 25%;
-    --popover: 270 30% 100%;
-    --popover-foreground: 274 56% 25%;
+    --background: 270 60% 94%; /* Saturated Light Lilac */
+    --foreground: 274 56% 20%; /* Darker Purple for text */
+    --card: 270 50% 98%; /* Lighter card background */
+    --card-foreground: 274 56% 20%;
+    --popover: 270 50% 98%;
+    --popover-foreground: 274 56% 20%;
     --primary: 262 80% 58%; /* Vibrant Purple */
     --primary-foreground: 0 0% 100%;
-    --secondary: 270 60% 94%; /* Lighter Purple for secondary elements */
+    --secondary: 270 60% 88%; /* Lighter Purple for secondary elements */
     --secondary-foreground: 274 56% 25%;
     --muted: 270 40% 90%;
     --muted-foreground: 274 30% 50%;
