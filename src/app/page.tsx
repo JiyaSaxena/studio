@@ -11,7 +11,7 @@ import { TransactionAnalysisTable } from "@/components/transaction-analysis-tabl
 import { Skeleton } from "@/components/ui/skeleton";
 import { AppHeader } from "@/components/app-header";
 import { Card, CardContent } from "@/components/ui/card";
-import { SenderSearch } from "@/components/sender-search";
+import { AccountSearch } from "@/components/account-search";
 import { SearchResults } from "@/components/search-results";
 
 export default function DashboardPage() {
@@ -88,19 +88,21 @@ export default function DashboardPage() {
     return {
       ...tx,
       riskScore: analysisData?.riskScore,
-      justification: analysisData?.justification
+      justification: analysisData?.justification,
+      creditScore: analysisData?.creditScore,
     }
   });
 
   const handleSearch = (searchTerm: string) => {
-    const trimmedSearchTerm = searchTerm.trim();
+    const trimmedSearchTerm = searchTerm.trim().toLowerCase();
     if (!trimmedSearchTerm) {
       setFilteredTransactions([]);
       setHasSearched(false);
       return;
     }
     const results = analyzedTransactions.filter(tx => 
-      String(tx.Sender_account).trim().toLowerCase().includes(trimmedSearchTerm.toLowerCase())
+      String(tx.Sender_account).trim().toLowerCase().includes(trimmedSearchTerm) ||
+      String(tx.Receiver_account).trim().toLowerCase().includes(trimmedSearchTerm)
     );
     setFilteredTransactions(results);
     setHasSearched(true);
@@ -137,7 +139,7 @@ export default function DashboardPage() {
           <div className="grid gap-8">
             <RiskDistributionChart analysis={analysis} />
             <TransactionAnalysisTable transactions={analyzedTransactions} />
-            <SenderSearch onSearch={handleSearch} />
+            <AccountSearch onSearch={handleSearch} />
             {hasSearched && <SearchResults transactions={filteredTransactions} />}
           </div>
         )}

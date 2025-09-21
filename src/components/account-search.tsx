@@ -6,11 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search } from "lucide-react";
 
-interface SenderSearchProps {
+interface AccountSearchProps {
   onSearch: (searchTerm: string) => void;
 }
 
-export function SenderSearch({ onSearch }: SenderSearchProps) {
+export function AccountSearch({ onSearch }: AccountSearchProps) {
   const [searchTerm, setSearchTerm] = useState("");
 
   const handleSearch = (e: React.FormEvent) => {
@@ -21,16 +21,16 @@ export function SenderSearch({ onSearch }: SenderSearchProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Search by Sender Account</CardTitle>
+        <CardTitle>Search by Sender or Receiver Account</CardTitle>
         <CardDescription>
-          Enter a sender account name to see all their transactions and risk details.
+          Enter an account name to see all their transactions and risk details.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSearch} className="flex gap-2">
           <Input
             type="text"
-            placeholder="Enter sender account name..."
+            placeholder="Enter account name..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="flex-grow"

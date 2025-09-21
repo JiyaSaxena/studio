@@ -14,10 +14,12 @@ export interface Transaction {
   Laundering_type: string;
   riskScore?: number;
   justification?: string;
+  creditScore?: number;
 }
 
 export interface TransactionAnalysis {
   transactionId: number;
   riskScore: number;
   justification: string;
+  creditScore: number;
 }

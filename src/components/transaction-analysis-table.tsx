@@ -43,6 +43,7 @@ export function TransactionAnalysisTable({ transactions }: TransactionAnalysisTa
             <TableHeader>
                 <TableRow>
                   <TableHead className="w-[100px] text-center">Risk Score</TableHead>
+                  <TableHead className="w-[120px] text-center">Credit out of 10</TableHead>
                   <TableHead>Amount</TableHead>
                   <TableHead>Payment Type</TableHead>
                   <TableHead>Sender Location</TableHead>
@@ -56,6 +57,11 @@ export function TransactionAnalysisTable({ transactions }: TransactionAnalysisTa
                     <TableCell className="text-center">
                       <Badge variant={getRiskVariant(transaction.riskScore)} className="text-sm font-bold">
                         {transaction.riskScore ?? 'N/A'}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-center">
+                       <Badge variant="outline" className="text-sm">
+                        {transaction.creditScore ?? 'N/A'}
                       </Badge>
                     </TableCell>
                     <TableCell className="font-medium">{new Intl.NumberFormat('en-US', { style: 'currency', currency: getCurrencyCode(transaction.Payment_currency) || 'USD' }).format(transaction.Amount)}</TableCell>

@@ -25,7 +25,7 @@ export function SearchResults({ transactions }: SearchResultsProps) {
         <CardDescription>
           {transactions.length > 0
             ? `Found ${transactions.length} transaction(s).`
-            : "No transactions found for this sender."}
+            : "No transactions found for this account."}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -33,7 +33,7 @@ export function SearchResults({ transactions }: SearchResultsProps) {
           <div className="space-y-4">
             {transactions.map((tx) => (
               <div key={tx.id} className="border p-4 rounded-lg bg-card/50">
-                <div className="flex justify-between items-start">
+                <div className="flex justify-between items-start gap-4">
                   <div>
                     <p className="font-semibold">
                       From: <span className="font-normal text-muted-foreground">{tx.Sender_account}</span>
@@ -42,9 +42,14 @@ export function SearchResults({ transactions }: SearchResultsProps) {
                       To: <span className="font-normal text-muted-foreground">{tx.Receiver_account}</span>
                     </p>
                   </div>
-                   <Badge variant={getRiskVariant(tx.riskScore)} className="text-sm font-bold">
-                     Risk: {tx.riskScore ?? 'N/A'}
-                  </Badge>
+                   <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                    <Badge variant={getRiskVariant(tx.riskScore)} className="text-sm font-bold">
+                        Risk: {tx.riskScore ?? 'N/A'}
+                    </Badge>
+                    <Badge variant="outline" className="text-sm">
+                        Credit out of 10: {tx.creditScore ?? 'N/A'}
+                    </Badge>
+                  </div>
                 </div>
                 <div className="mt-2 text-sm">
                    <p><span className="font-semibold">Amount:</span> {new Intl.NumberFormat('en-US', { style: 'currency', currency: getCurrencyCode(tx.Payment_currency) || 'USD' }).format(tx.Amount)}</p>
