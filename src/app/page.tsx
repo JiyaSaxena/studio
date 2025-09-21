@@ -91,7 +91,7 @@ export default function DashboardPage() {
       return;
     }
     const results = analyzedTransactions.filter(tx => 
-      tx.Sender_account.toLowerCase().includes(searchTerm.toLowerCase())
+      String(tx.Sender_account).toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredTransactions(results);
     setHasSearched(true);
