@@ -39,7 +39,7 @@ export function TransactionAnalysisTable({ transactions }: TransactionAnalysisTa
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[400px] w-full">
+        <div className="w-full">
             <Table>
             <TableHeader>
                 <TableRow>
@@ -68,7 +68,7 @@ export function TransactionAnalysisTable({ transactions }: TransactionAnalysisTa
                 ))}
             </TableBody>
             </Table>
-        </ScrollArea>
+        </div>
       </CardContent>
     </Card>
   );
