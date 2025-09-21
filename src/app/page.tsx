@@ -10,6 +10,7 @@ import { RiskDistributionChart } from "@/components/risk-distribution-chart";
 import { TransactionAnalysisTable } from "@/components/transaction-analysis-table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AppHeader } from "@/components/app-header";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function DashboardPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -81,23 +82,32 @@ export default function DashboardPage() {
       <AppHeader />
       <main className="flex-1 container mx-auto p-4 md:p-8 space-y-8">
         <div className="text-center">
-            <h1 className="text-3xl font-bold">Mule Account Scanner</h1>
-            <p className="text-muted-foreground">Paste account data below to analyze for suspicious patterns and generate a risk score.</p>
+            <h1 className="text-4xl font-bold tracking-tight text-primary-dark">Mule Account Detection</h1>
+            <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">Upload a CSV file of transaction data to analyze for suspicious patterns and generate a risk score for each transaction.</p>
         </div>
+        
         <TransactionUploader onFileChange={handleFileChange} isLoading={isLoading} />
         
         {isLoading && (
-          <div className="space-y-8">
-            <Skeleton className="h-[300px] w-full" />
-            <Skeleton className="h-[400px] w-full" />
+          <div className="grid gap-8">
+            <Card>
+              <CardContent className="p-6">
+                <Skeleton className="h-[300px] w-full" />
+              </CardContent>
+            </Card>
+            <Card>
+              <CardContent className="p-6">
+                <Skeleton className="h-[400px] w-full" />
+              </CardContent>
+            </Card>
           </div>
         )}
 
         {!isLoading && analysis.length > 0 && (
-          <>
+          <div className="grid gap-8">
             <RiskDistributionChart analysis={analysis} />
             <TransactionAnalysisTable transactions={analyzedTransactions} />
-          </>
+          </div>
         )}
       </main>
     </div>
