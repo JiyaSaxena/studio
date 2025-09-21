@@ -4,7 +4,7 @@ import { useState } from "react";
 import type { Transaction, TransactionAnalysis } from "@/types";
 import { getAnalysis } from "@/app/actions";
 import { useToast } from "@/hooks/use-toast";
-import Papa from "paparse";
+import Papa from "papaparse";
 import { TransactionUploader } from "@/components/transaction-uploader";
 import { RiskDistributionChart } from "@/components/risk-distribution-chart";
 import { TransactionAnalysisTable } from "@/components/transaction-analysis-table";
@@ -93,7 +93,7 @@ export default function DashboardPage() {
     }
   });
 
-  const handleSearch = (searchTerm: string, searchType: 'sender' | 'receiver') => {
+  const handleSearch = (searchTerm: string) => {
     const trimmedSearchTerm = searchTerm.trim().toLowerCase();
     if (!trimmedSearchTerm) {
       setFilteredTransactions([]);
@@ -101,14 +101,11 @@ export default function DashboardPage() {
       return;
     }
 
-    const results = analyzedTransactions.filter(tx => {
-      if (searchType === 'sender') {
-        return String(tx.Sender_account).trim().toLowerCase().includes(trimmedSearchTerm);
-      } else {
-        return String(tx.Receiver_account).trim().toLowerCase().includes(trimmedSearchTerm);
-      }
-    });
-
+    const results = analyzedTransactions.filter(tx => 
+        String(tx.Sender_account).trim().toLowerCase().includes(trimmedSearchTerm) ||
+        String(tx.Receiver_account).trim().toLowerCase().includes(trimmedSearchTerm)
+    );
+    
     setFilteredTransactions(results);
     setHasSearched(true);
   };
