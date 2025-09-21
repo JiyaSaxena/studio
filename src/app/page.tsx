@@ -11,11 +11,16 @@ import { TransactionAnalysisTable } from "@/components/transaction-analysis-tabl
 import { Skeleton } from "@/components/ui/skeleton";
 import { AppHeader } from "@/components/app-header";
 import { Card, CardContent } from "@/components/ui/card";
+import { SenderSearch } from "@/components/sender-search";
+import { SearchResults } from "@/components/search-results";
 
 export default function DashboardPage() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [analysis, setAnalysis] = useState<TransactionAnalysis[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
+  const [hasSearched, setHasSearched] = useState(false);
+
   const { toast } = useToast();
 
   const handleFileChange = (file: File) => {
@@ -40,6 +45,8 @@ export default function DashboardPage() {
             const parsedTransactions = results.data.map((t, index) => ({ ...(t as Omit<Transaction, 'id'>), id: index + 1 }));
             setTransactions(parsedTransactions);
             setAnalysis([]);
+            setFilteredTransactions([]);
+            setHasSearched(false);
             setIsLoading(true);
             const { data, error } = await getAnalysis(csvContent);
             setIsLoading(false);
@@ -77,12 +84,26 @@ export default function DashboardPage() {
     }
   });
 
+  const handleSearch = (searchTerm: string) => {
+    if (!searchTerm) {
+      setFilteredTransactions([]);
+      setHasSearched(false);
+      return;
+    }
+    const results = analyzedTransactions.filter(tx => 
+      tx.Sender_account.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredTransactions(results);
+    setHasSearched(true);
+  };
+
+
   return (
     <div className="flex flex-col min-h-screen">
       <AppHeader />
       <main className="flex-1 container mx-auto p-4 md:p-8 space-y-8">
         <div className="text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-primary-dark">Mule Account Detection</h1>
+            <h1 className="text-4xl font-bold tracking-tight">Mule Account Detection</h1>
             <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">Upload a CSV file of transaction data to analyze for suspicious patterns and generate a risk score for each transaction.</p>
         </div>
         
@@ -107,6 +128,8 @@ export default function DashboardPage() {
           <div className="grid gap-8">
             <RiskDistributionChart analysis={analysis} />
             <TransactionAnalysisTable transactions={analyzedTransactions} />
+            <SenderSearch onSearch={handleSearch} />
+            {hasSearched && <SearchResults transactions={filteredTransactions} />}
           </div>
         )}
       </main>
