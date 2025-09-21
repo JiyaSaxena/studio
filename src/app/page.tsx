@@ -93,13 +93,14 @@ export default function DashboardPage() {
   });
 
   const handleSearch = (searchTerm: string) => {
-    if (!searchTerm) {
+    const trimmedSearchTerm = searchTerm.trim();
+    if (!trimmedSearchTerm) {
       setFilteredTransactions([]);
       setHasSearched(false);
       return;
     }
     const results = analyzedTransactions.filter(tx => 
-      String(tx.Sender_account).toLowerCase().includes(searchTerm.toLowerCase())
+      String(tx.Sender_account).trim().toLowerCase().includes(trimmedSearchTerm.toLowerCase())
     );
     setFilteredTransactions(results);
     setHasSearched(true);
